@@ -4,7 +4,7 @@ An interactive 3D smart-city design simulator. Pick a UAE reference location (Aj
 
 Built as a portfolio project in Data Science and Artificial Intelligence.
 
-**Live demo:** `https://YOUR-USERNAME.github.io/city-of-tomorrow`
+**Live demo:** `https://RAHAF-Mohamed08.github.io/city-of-tomorrow`
 
 <!-- Add screenshots here: ![City of Tomorrow](screenshot.png) -->
 

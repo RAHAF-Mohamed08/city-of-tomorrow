@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>City of Tomorrow</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#35284F;--bg2:#483760;--lav:#C9B7F2;--lil:#A98CE5;--gold:#D6A34D;--ink:#FFFAF1;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font:14px 'DM Sans',system-ui,sans-serif;overflow:hidden}
+#app{position:relative;height:100%;background:radial-gradient(ellipse at 50% 30%,#4f3f73,var(--bg) 70%)}
+#sketch{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.3}
+#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+.pn{position:absolute;background:rgba(53,40,79,.84);backdrop-filter:blur(8px);border:1.5px dashed rgba(255,250,241,.4);border-radius:18px;padding:10px}
+#head{left:12px;top:10px;padding:6px 14px}
+#head h1{font:600 30px Caveat,cursive;margin:0;color:var(--gold);line-height:1}
+#head small{color:var(--lav);font-size:11px}
+#tools{left:12px;top:78px;display:flex;flex-direction:column;gap:4px;max-height:calc(100% - 140px);overflow:auto}
+.tb{width:54px;height:50px;border:0;border-radius:12px;background:transparent;color:var(--ink);cursor:pointer;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.tb b{font-size:20px;font-weight:400;line-height:1}.tb span{font-size:9px;color:var(--lav)}
+.tb:hover{background:var(--bg2)}.tb.on{background:var(--gold);color:#35284F}.tb.on span{color:#35284F}
+#bar{right:12px;top:10px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 250px);padding:6px}
+.ab{border:1px solid rgba(255,250,241,.35);background:var(--bg2);color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer;font:inherit;font-size:12px}
+.ab:hover{background:var(--lil);color:#35284F}.ab.on{background:var(--gold);color:#35284F}
+#side{right:12px;top:62px;bottom:46px;width:268px;overflow:auto}
+#side h3{font:600 20px Caveat,cursive;color:var(--gold);margin:10px 0 4px}
+#side section{border-bottom:1px dashed rgba(255,250,241,.25);padding-bottom:8px}
+label{display:block;margin:6px 0;font-size:12px;color:var(--lav)}
+label b{color:var(--ink);float:right}
+select,input[type=color]{width:100%;background:var(--bg2);color:var(--ink);border:1px solid rgba(255,250,241,.3);border-radius:8px;padding:5px;font:inherit;margin-top:2px}
+input[type=color]{height:30px;padding:2px}
+input[type=range]{width:100%;accent-color:var(--gold)}
+label.chk{display:flex;gap:8px;align-items:center;color:var(--ink)}
+.hint{color:var(--lav);font-size:12px;margin:4px 0}
+.score{font:600 44px Caveat,cursive;color:var(--gold);line-height:1}
+.bar{height:6px;border-radius:4px;background:var(--bg2);margin:2px 0 6px}.bar i{display:block;height:100%;border-radius:4px;background:var(--lil)}
+.row{display:flex;justify-content:space-between;font-size:12px}
+details{font-size:11px;color:var(--lav)}
+.soon{border:1px dashed var(--lil);border-radius:10px;padding:6px;color:var(--lav);font-size:12px}
+#bk{left:50%;transform:translateX(-50%);bottom:46px;display:none;gap:4px;padding:6px}
+#status{left:12px;right:12px;bottom:8px;padding:5px 12px;font-size:11px;color:var(--lav);border-radius:12px;display:flex;justify-content:space-between;gap:8px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--gold);color:#35284F;padding:8px 16px;border-radius:12px;opacity:0;transition:.3s;pointer-events:none;font-weight:600;z-index:9}
+#pb{display:none}
+@media(max-width:760px){
+#tools{top:auto;bottom:34px;left:8px;right:8px;flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden}
+#side{display:none;left:8px;right:8px;top:auto;bottom:96px;width:auto;max-height:42vh}#side.open{display:block}
+#bar{max-width:calc(100% - 170px)}#pb{display:inline-block}#bk{bottom:96px;max-width:96%;overflow-x:auto}#head h1{font-size:22px}#head small{display:none}
+#status span+span{display:none}}
+</style></head><body>
+<div id="app">
+<svg id="sketch" viewBox="0 0 800 500" preserveAspectRatio="xMidYMax slice" fill="none" stroke="#FFFAF1" stroke-width="1.2" stroke-dasharray="5 4" stroke-linecap="round"><path d="M0 470H800M40 470V380H90V330H140V470M170 470V300L210 270V470M250 470V350H320V470M360 470V250L395 230V470M430 470V320H500V290H540V470M580 470V360H650V470M690 470V310L730 290V470"/><circle cx="650" cy="90" r="46"/><circle cx="650" cy="90" r="62" stroke-dasharray="2 6"/><path d="M120 90q40-40 80 0M150 80q20-20 40 0"/></svg>
+<canvas id="cv"></canvas>
+<div id="head" class="pn"><h1>City of Tomorrow</h1><small>UAE Smart City Designer</small></div>
+<div id="tools" class="pn"></div>
+<div id="bar" class="pn">
+<button class="ab" id="pb">Panel</button><button class="ab" id="undo">↶ Undo</button><button class="ab" id="reset">Reset</button><button class="ab" id="save">Save</button><button class="ab" id="load">Load</button><button class="ab" id="rl">⟲</button><button class="ab" id="rr">⟳</button><button class="ab" id="zi">+</button><button class="ab" id="zo">−</button><button class="ab" id="auto">Auto-rotate</button><button class="ab" id="home">Home view</button>
+</div>
+<div id="bk" class="pn"></div>
+<div id="side" class="pn">
+<section><h3>Location</h3><select id="loc"></select><p class="hint" id="ref"></p><p class="hint">Live OpenStreetMap view &amp; real footprints: Stage 2–3 (not in this preview). Everything you build here is a <b style="float:none">proposed design</b>, not real buildings.</p></section>
+<section><h3>Inspector</h3><div id="insp"></div></section>
+<section><h3>Sustainability</h3><div id="stats"></div></section>
+<section><h3>Layers</h3><label class="chk"><input type="checkbox" id="heat"> Urban heat view (illustrative)</label></section>
+<section style="border:0"><h3>AI Advisor</h3><div class="soon">Coming soon — no AI service is connected yet. Planned: greener layouts, tree &amp; park suggestions, layout comparison.</div></section>
+</div>
+<div id="status" class="pn"><span id="hint"></span><span id="coord"></span></div>
+</div>
+<div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const LOCS={Ajman:[25.4052,55.5136],Dubai:[25.2048,55.2708],'Abu Dhabi':[24.4539,54.3773],Sharjah:[25.3463,55.4209],Fujairah:[25.1288,56.3265]};
+const BK={residential:{f:8,w:2,d:2,c:'#C9B7F2'},skyscraper:{f:40,w:2,d:2,c:'#A98CE5'},school:{f:3,w:4,d:3,c:'#D6A34D'},hospital:{f:6,w:4,d:3,c:'#FFFAF1'},office:{f:15,w:3,d:3,c:'#8fa6d9'}};
+const LN={road:{w:8,d:2},sidewalk:{w:8,d:1},bike:{w:8,d:1},transit:{w:8,d:1.2},plaza:{w:4,d:4},park:{w:5,d:5}};
+const NAME={building:'Building',tree:'Tree',road:'Road',sidewalk:'Sidewalk',bike:'Bike lane',transit:'Transit route',plaza:'Public plaza',park:'Park'};
+const TOOLS=[['select','⌖','Select'],['building','▣','Building'],['tree','♣','Tree'],['grove','⁂','Grove'],['park','▦','Park'],['road','═','Road'],['sidewalk','▭','Walk'],['bike','⇄','Bike'],['transit','◈','Transit'],['plaza','○','Plaza'],['delete','✕','Delete']];
+const HINT={select:'Click to select · drag an object to move it · drag empty space to orbit · right-drag to pan · scroll to zoom',delete:'Click an object to delete it',grove:'Click the ground to plant a group of trees'};
+const L={kind:'Type',style:'Style',mat:'Material',color:'Color',floors:'Floors',w:'Width / length',d:'Depth / width',solar:'Solar panels',roof:'Rooftop garden',sp:'Species',size:'Size',pk:'Landscaping'};
+const F={building:[['kind','sel',Object.keys(BK)],['style','sel',['box','stepped','tapered','round']],['mat','sel',['glass','concrete','stone','metal']],['color','col'],['floors','rng',1,80,1],['w','rng',1,8,.5],['d','rng',1,8,.5],['solar','chk'],['roof','chk']],
+tree:[['sp','sel',['ghaf','palm']],['size','rng',.5,2,.1]],park:[['pk','sel',['lawn','xeric']],['w','rng',2,16,.5],['d','rng',2,16,.5]],plaza:[['w','rng',2,16,.5],['d','rng',2,16,.5]],line:[['w','rng',1,30,.5],['d','rng',.5,8,.5]]};
+let S={loc:'Ajman',objs:[],next:1},sel=null,tool='select',bKind='residential',hist=[],heat=false,bh=null;
+const clampv=v=>Math.max(-24,Math.min(24,v)),snap=v=>clampv(Math.round(v*2)/2);
+function add(type,x,z,ex){const o=Object.assign({id:S.next++,type,x,z,rot:0},ex);S.objs.push(o);return o}
+function addB(kind,x,z,ex){const k=BK[kind];return add('building',x,z,Object.assign({kind,floors:k.f,w:k.w,d:k.d,color:k.c,mat:'glass',style:'box',solar:false,roof:false},ex))}
+const cur=()=>S.objs.find(o=>o.id===sel);
+/* ---------- three.js scene ---------- */
+const cv=$('#cv'),renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;
+const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(45,1,.1,300);
+const HOME=new THREE.Vector3(30,26,30);cam.position.copy(HOME);
+const controls=new THREE.OrbitControls(cam,cv);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2.05;controls.minDistance=6;controls.maxDistance=100;controls.autoRotateSpeed=.8;
+scene.add(new THREE.HemisphereLight(0xFFFAF1,0x483760,.75));
+const sun=new THREE.DirectionalLight(0xfff1d6,.9);sun.position.set(25,40,15);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-35,right:35,top:35,bottom:-35,far:120});scene.add(sun);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(50,50).rotateX(-Math.PI/2),new THREE.MeshStandardMaterial({color:0x483760,roughness:1}));ground.receiveShadow=true;scene.add(ground);
+const grid=new THREE.GridHelper(50,50,0xC9B7F2,0xC9B7F2);grid.material.transparent=true;grid.material.opacity=.14;grid.position.y=.01;scene.add(grid);
+const HC=document.createElement('canvas');HC.width=HC.height=100;const hx=HC.getContext('2d'),HT=new THREE.CanvasTexture(HC);
+const heatMesh=new THREE.Mesh(new THREE.PlaneGeometry(50,50).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({map:HT,transparent:true,opacity:.7,depthWrite:false}));heatMesh.position.y=.02;heatMesh.visible=false;scene.add(heatMesh);
+const root=new THREE.Group();scene.add(root);
+const ring=new THREE.Mesh(new THREE.RingGeometry(.45,.6,32).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0xD6A34D}));ring.visible=false;ring.position.y=.1;scene.add(ring);
+const mc={};
+const mat=(c,m)=>{const k=c+m;return mc[k]||(mc[k]=new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.8},{glass:{metalness:.6,roughness:.1,transparent:true,opacity:.88},concrete:{metalness:0,roughness:.9},stone:{metalness:.1,roughness:.7},metal:{metalness:.9,roughness:.3}}[m]||{})))};
+const BG=new THREE.BoxGeometry(1,1,1).translate(0,.5,0),BE=new THREE.EdgesGeometry(BG);
+const TG=new THREE.CylinderGeometry(.35,.7,1,4).rotateY(Math.PI/4).translate(0,.5,0),TE=new THREE.EdgesGeometry(TG);
+const RG=new THREE.CylinderGeometry(.5,.5,1,24).translate(0,.5,0),RE=new THREE.EdgesGeometry(RG);
+const SG=new THREE.SphereGeometry(.5,10,8);
+const LM=new THREE.LineBasicMaterial({color:0xFFFAF1,transparent:true,opacity:.75});
+function part(g,e,m,sx,sy,sz,x,y,z){const h=new THREE.Group();h.add(new THREE.Mesh(g,m));if(e)h.add(new THREE.LineSegments(e,LM));h.scale.set(sx,sy,sz);h.position.set(x,y,z);return h}
+function build(o){const g=new THREE.Group();g.userData.id=o.id;const w=o.w,d=o.d;
+if(o.type==='building'){const H=o.floors*.35,m=mat(o.color,o.mat);
+ if(o.style==='stepped')g.add(part(BG,BE,m,w,H*.6,d,0,0,0),part(BG,BE,m,w*.7,H*.4,d*.7,0,H*.6,0));
+ else if(o.style==='tapered')g.add(part(TG,TE,m,w,H,d,0,0,0));
+ else if(o.style==='round')g.add(part(RG,RE,m,w,H,d,0,0,0));
+ else g.add(part(BG,BE,m,w,H,d,0,0,0));
+ const tw=o.style==='tapered'?.5:o.style==='stepped'?.7:1,rw=w*tw*.9,rd=d*tw*.9;
+ if(o.roof){g.add(part(BG,BE,mat('#5fae6b','stone'),rw,.1,rd,0,H,0));g.add(part(SG,null,mat('#3f8f55','stone'),.4,.3,.4,-rw*.3,H+.1,rd*.25))}
+ if(o.solar){const sw=o.roof?rw*.45:rw;g.add(part(BG,BE,mat('#1d3a7a','metal'),sw,.06,rd*.7,o.roof?rw*.25:0,H+(o.roof?.1:0),0))}
+ if(o.kind==='hospital'){const gm=mat('#D6A34D','metal');g.add(part(BG,null,gm,.2,.06,.8,0,H+.12,0),part(BG,null,gm,.8,.06,.2,0,H+.12,0))}
+}else if(o.type==='tree'){const s=o.size,lf=mat(o.sp==='palm'?'#4f9a5a':'#5f9e6e','stone'),tr=mat('#8a6a4a','stone');
+ if(o.sp==='palm'){g.add(part(RG,null,tr,.1*s,1.8*s,.1*s,0,0,0));[0,1,2].forEach(i=>{const f=part(BG,null,lf,1*s,.05,.2*s,0,1.8*s,0);f.rotation.y=i*Math.PI/3;g.add(f)})}
+ else g.add(part(RG,null,tr,.12*s,.9*s,.12*s,0,0,0),part(SG,null,lf,1.1*s,.9*s,1.1*s,0,1*s,0));
+}else if(o.type==='park'){const lawn=o.pk==='lawn';g.add(part(BG,BE,mat(lawn?'#5fae6b':'#c9a96a','stone'),w,.06,d,0,0,0));
+ for(let i=0;i<Math.min(14,Math.round(w*d/3));i++)g.add(part(SG,null,mat(lawn?'#3f8f55':'#8a9a5b','stone'),.5,.35,.5,Math.sin(o.id*7+i*12.9)*.45*w,.1,Math.cos(o.id*3+i*78.2)*.45*d));
+}else{const C={road:['#2c2540',.04],sidewalk:['#d9cfe8',.06],bike:['#4f9a7a',.07],transit:['#D6A34D',.08],plaza:['#C9B7F2',.05]}[o.type];
+ g.add(part(BG,o.type==='road'?null:BE,mat(C[0],'stone'),w,C[1],d,0,0,0));
+ if(o.type==='road')for(let i=0;i<Math.floor(w);i++)g.add(part(BG,null,mat('#FFFAF1','stone'),.5,.01,.08,-w/2+i+.5,.04,0));
+ if(o.type==='transit'){const dk=mat('#35284F','stone');g.add(part(BG,null,dk,w,.02,.06,0,.08,d*.3),part(BG,null,dk,w,.02,.06,0,.08,-d*.3))}}
+g.position.set(o.x,0,o.z);g.rotation.y=o.rot*Math.PI/2;return g}
+function sync(light){while(root.children.length)root.remove(root.children[0]);const map={};
+S.objs.forEach(o=>{const g=build(o);g.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true}});root.add(g);map[o.id]=g});
+if(bh){scene.remove(bh);bh=null}if(sel&&map[sel]){bh=new THREE.BoxHelper(map[sel],0xD6A34D);scene.add(bh)}
+stats();if(!light)insp();if(heat)drawHeat()}
+function drawHeat(){const im=hx.createImageData(100,100);
+for(let j=0;j<100;j++)for(let i=0;i<100;i++){const x=i*.5-24.75,z=j*.5-24.75;let h=.5;
+ for(const o of S.objs){const sw=o.rot%2,hw=(o.type==='tree'?0:(sw?o.d:o.w)/2),hd=(o.type==='tree'?0:(sw?o.w:o.d)/2);
+  const r=Math.hypot(Math.max(0,Math.abs(x-o.x)-hw),Math.max(0,Math.abs(z-o.z)-hd));
+  const inf=R=>Math.max(0,1-r/R);
+  if(o.type==='building')h+=.5*inf(2);else if(o.type==='road')h+=.35*inf(1.5);else if(o.type==='tree')h-=.3*inf(2.5*o.size);else if(o.type==='park')h-=(o.pk==='lawn'?.45:.25)*inf(2.5);else h+=.08*inf(1)}
+ h=Math.max(0,Math.min(1,h));const A=[95,160,200],B=[214,163,77],C=[235,90,70],t=h<.5?h*2:(h-.5)*2,P=h<.5?[A,B]:[B,C],k=(j*100+i)*4;
+ for(let q=0;q<3;q++)im.data[k+q]=P[0][q]+(P[1][q]-P[0][q])*t;im.data[k+3]=255}
+hx.putImageData(im,0,0);HT.needsUpdate=true}
+/* ---------- state, history ---------- */
+function commit(){hist.push(JSON.stringify(S));if(hist.length>80)hist.shift();sync()}
+function undo(){if(hist.length<2)return toast('Nothing to undo');hist.pop();S=JSON.parse(hist[hist.length-1]);if(!cur())sel=null;$('#loc').value=S.loc;sync()}
+function removeObj(id){S.objs=S.objs.filter(o=>o.id!==id);if(sel===id)sel=null;commit()}
+function place(x,z){
+if(tool==='building')sel=addB(bKind,x,z).id;
+else if(tool==='tree')sel=add('tree',x,z,{sp:'ghaf',size:1}).id;
+else if(tool==='grove'){for(let i=0;i<8;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*2.2;add('tree',clampv(x+Math.cos(a)*r),clampv(z+Math.sin(a)*r),{sp:Math.random()<.3?'palm':'ghaf',size:.7+Math.random()*.6})}sel=null}
+else sel=add(tool,x,z,Object.assign({},LN[tool],tool==='park'?{pk:'lawn'}:{})).id;
+commit()}
+let tt;function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;clearTimeout(tt);tt=setTimeout(()=>e.style.opacity=0,2200)}
+/* ---------- UI ---------- */
+const fmt=(k,v)=>k==='floors'?v+' ('+v*3.5+' m)':(k==='w'||k==='d')?v*10+' m':k==='size'?'×'+v:v;
+function insp(){const o=cur(),el=$('#insp');
+if(!o){el.innerHTML='<p class="hint">Click an object to edit it, or pick a tool and click the ground.</p>';return}
+let h='<b>'+NAME[o.type]+' #'+o.id+'</b>';
+(F[o.type]||F.line).forEach(([k,t,a,b,s])=>{const lab=L[k];
+ if(t==='sel')h+='<label>'+lab+'<select data-k="'+k+'">'+a.map(v=>'<option'+(o[k]===v?' selected':'')+'>'+v+'</option>').join('')+'</select></label>';
+ else if(t==='col')h+='<label>'+lab+'<input type="color" data-k="'+k+'" value="'+o[k]+'"></label>';
+ else if(t==='rng')h+='<label>'+lab+'<b id="v_'+k+'">'+fmt(k,o[k])+'</b><input type="range" data-k="'+k+'" min="'+a+'" max="'+b+'" step="'+s+'" value="'+o[k]+'"></label>';
+ else h+='<label class="chk"><input type="checkbox" data-k="'+k+'"'+(o[k]?' checked':'')+'> '+lab+'</label>'});
+h+='<div style="display:flex;gap:6px;margin-top:8px"><button class="ab" id="rot">Rotate 90°</button><button class="ab" id="del">Delete</button></div>';
+el.innerHTML=h}
+$('#insp').addEventListener('input',e=>{const o=cur(),k=e.target.dataset.k;if(!o||!k)return;const t=e.target;
+o[k]=t.type==='checkbox'?t.checked:t.type==='range'?+t.value:t.value;if(k==='kind'&&o.type==='building')return;
+const v=$('#v_'+k);if(v)v.textContent=fmt(k,o[k]);sync(true)});
+$('#insp').addEventListener('change',e=>{const o=cur(),k=e.target.dataset.k;if(!o||!k)return;
+if(k==='kind'&&o.type==='building'){const p=BK[o.kind];Object.assign(o,{floors:p.f,w:p.w,d:p.d,color:p.c})}commit()});
+$('#insp').addEventListener('click',e=>{const o=cur();if(!o)return;if(e.target.id==='rot'){o.rot=(o.rot+1)%4;commit()}if(e.target.id==='del')removeObj(o.id)});
+function stats(){const B=S.objs.filter(o=>o.type==='building'),c=t=>S.objs.filter(o=>o.type===t).length;
+const n={b:B.length,t:c('tree'),p:c('park'),s:B.filter(b=>b.solar).length,g:B.filter(b=>b.roof).length,x:S.objs.filter(o=>o.type==='park'&&o.pk==='xeric').length,m:c('bike')+c('transit'),w:c('sidewalk')+c('plaza')};
+const P=[['Green space',Math.min(35,n.t*1.5+n.p*6+n.g*4),35],['Solar energy',Math.min(25,n.s*5),25],['Mobility',Math.min(25,n.m*5+n.w*2),25],['Water-saving',Math.min(15,n.x*7.5),15]];
+const tot=Math.round(P.reduce((a,p)=>a+p[1],0));
+$('#stats').innerHTML='<div class="score">'+tot+'<small style="font:12px DM Sans"> / 100 design score</small></div>'+P.map(p=>'<div class="row"><span>'+p[0]+'</span><span>'+Math.round(p[1])+'/'+p[2]+'</span></div><div class="bar"><i style="width:'+p[1]/p[2]*100+'%"></i></div>').join('')+
+'<div class="hint">'+n.b+' buildings · '+n.t+' trees · '+n.p+' parks · '+n.s+' solar · '+n.g+' green roofs</div><details><summary>How is this calculated?</summary>Green = 1.5/tree + 6/park + 4/green roof (max 35). Solar = 5/building with panels (max 25). Mobility = 5/bike lane or transit route + 2/sidewalk or plaza (max 25). Water = 7.5/xeriscape park (max 15). This is a simple score from your design — not a scientific measurement.</details>'}
+function setTool(t){tool=t;document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$('#bk').style.display=t==='building'?'flex':'none';
+$('#hint').textContent=HINT[t]||'Click the ground to place · drag to orbit · scroll to zoom';ring.visible=false;cv.style.cursor=(t==='select'||t==='delete')?'default':'crosshair'}
+$('#tools').innerHTML=TOOLS.map(t=>'<button class="tb" data-t="'+t[0]+'" title="'+t[2]+'"><b>'+t[1]+'</b><span>'+t[2]+'</span></button>').join('');
+$('#tools').onclick=e=>{const b=e.target.closest('.tb');if(b)setTool(b.dataset.t)};
+$('#bk').innerHTML=Object.keys(BK).map(k=>'<button class="ab" data-k="'+k+'">'+k+'</button>').join('');
+$('#bk').onclick=e=>{const k=e.target.dataset.k;if(!k)return;bKind=k;document.querySelectorAll('#bk .ab').forEach(b=>b.classList.toggle('on',b.dataset.k===k))};
+document.querySelector('#bk [data-k=residential]').classList.add('on');
+$('#loc').innerHTML=Object.keys(LOCS).map(k=>'<option>'+k+'</option>').join('');
+$('#loc').onchange=e=>{S.loc=e.target.value;commit();refLoc()};
+function refLoc(){const [a,b]=LOCS[S.loc];$('#ref').textContent='Geographic reference: '+S.loc+' ('+a.toFixed(4)+'°N, '+b.toFixed(4)+'°E). Grid: 1 cell = 10 m.'}
+$('#undo').onclick=undo;
+$('#reset').onclick=()=>{S.objs=[];S.next=1;sel=null;commit();toast('City cleared — Undo restores it')};
+$('#save').onclick=()=>{try{localStorage.setItem('cot-design',JSON.stringify(S));toast('Design saved in this browser')}catch(e){toast('Saving is unavailable here')}};
+$('#load').onclick=()=>{try{const j=localStorage.getItem('cot-design');if(!j)return toast('No saved design yet');S=JSON.parse(j);sel=null;$('#loc').value=S.loc;commit();refLoc();toast('Design loaded')}catch(e){toast('Could not load the saved design')}};
+const orbit=a=>{const v=cam.position.clone().sub(controls.target).applyAxisAngle(new THREE.Vector3(0,1,0),a);cam.position.copy(controls.target).add(v)};
+const zoom=f=>{const v=cam.position.clone().sub(controls.target).multiplyScalar(f);cam.position.copy(controls.target).add(v)};
+$('#rl').onclick=()=>orbit(Math.PI/6);$('#rr').onclick=()=>orbit(-Math.PI/6);$('#zi').onclick=()=>zoom(.8);$('#zo').onclick=()=>zoom(1.25);
+$('#auto').onclick=e=>{controls.autoRotate=!controls.autoRotate;e.target.classList.toggle('on',controls.autoRotate)};
+$('#home').onclick=()=>{cam.position.copy(HOME);controls.target.set(0,0,0)};
+$('#heat').onchange=e=>{heat=e.target.checked;heatMesh.visible=heat;if(heat)drawHeat()};
+$('#pb').onclick=()=>$('#side').classList.toggle('open');
+/* ---------- pointer interaction ---------- */
+const RC=new THREE.Raycaster(),M=new THREE.Vector2(),GP=new THREE.Plane(new THREE.Vector3(0,1,0),0),PT=new THREE.Vector3();
+function ray(e){const r=cv.getBoundingClientRect();M.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);RC.setFromCamera(M,cam)}
+const onGround=e=>{ray(e);return RC.ray.intersectPlane(GP,PT)?PT:null};
+function pick(e){ray(e);const h=RC.intersectObjects(root.children,true)[0];if(!h)return null;let n=h.object;while(n&&!n.userData.id)n=n.parent;return n?n.userData.id:null}
+let down=null,drag=null;
+cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;down={x:e.clientX,y:e.clientY};
+if(tool==='select'){const id=pick(e);if(id){sel=id;const o=cur(),g=onGround(e);drag={dx:o.x-(g?g.x:o.x),dz:o.z-(g?g.z:o.z),moved:false};controls.enabled=false;sync()}}},true);
+cv.addEventListener('pointermove',e=>{const g=onGround(e);
+if(drag&&g){const o=cur();if(o){o.x=snap(g.x+drag.dx);o.z=snap(g.z+drag.dz);drag.moved=true;sync(true)}return}
+if(g){const [la,lo]=LOCS[S.loc];$('#coord').textContent=(la-g.z*10/111320).toFixed(5)+'°N, '+(lo+g.x*10/(111320*Math.cos(la*Math.PI/180))).toFixed(5)+'°E (design grid)';
+ if(tool!=='select'&&tool!=='delete'){ring.visible=true;ring.position.set(snap(g.x),.1,snap(g.z))}}});
+addEventListener('pointerup',e=>{if(!down)return;const click=Math.hypot(e.clientX-down.x,e.clientY-down.y)<6;
+if(drag){controls.enabled=true;if(drag.moved)commit();drag=null}
+else if(click&&e.target===cv){
+ if(tool==='select'){sel=null;sync()}
+ else if(tool==='delete'){const id=pick(e);if(id)removeObj(id)}
+ else{const g=onGround(e);if(g)place(snap(g.x),snap(g.z))}}
+down=null});
+addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)&&e.key!=='Escape')return;
+if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();undo()}
+else if((e.key==='Delete'||e.key==='Backspace')&&sel){e.preventDefault();removeObj(sel)}
+else if(e.key==='Escape'){setTool('select');sel=null;sync()}});
+/* ---------- start ---------- */
+function resize(){const a=$('#app');renderer.setSize(a.clientWidth,a.clientHeight,false);cam.aspect=a.clientWidth/a.clientHeight;cam.updateProjectionMatrix()}
+new ResizeObserver(resize).observe($('#app'));resize();
+(function loop(){requestAnimationFrame(loop);controls.update();renderer.render(scene,cam)})();
+/* starter district — a user-created design, not real buildings */
+add('road',0,0,{w:30,d:2});add('road',-8,0,{w:24,d:2,rot:1});add('sidewalk',0,-1.5,{w:30,d:1});add('bike',0,1.5,{w:30,d:1});
+addB('skyscraper',4,-5,{style:'tapered',solar:true});addB('office',-3,-5,{style:'stepped',roof:true});addB('residential',10,-5,{roof:true,solar:true});
+addB('hospital',-14,6);addB('school',12,6);add('park',3,7,{w:7,d:5,pk:'xeric'});add('plaza',-3,6,{w:4,d:4});
+for(let i=0;i<6;i++)add('tree',-12+i*5,-2.6,{sp:i%2?'palm':'ghaf',size:1});
+hist=[];$('#loc').value=S.loc;refLoc();setTool('select');commit();
+</script></body></html>

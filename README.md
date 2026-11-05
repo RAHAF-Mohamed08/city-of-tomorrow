@@ -6,7 +6,7 @@ Built as a portfolio project in Data Science and Artificial Intelligence.
 
 **Live demo:** `https://RAHAF-Mohamed08.github.io/city-of-tomorrow`
 
-![City of Tomorrow](screenshot.png) -->
+![City of Tomorrow](screenshot.png.png) -->
 
 ## Features
 
